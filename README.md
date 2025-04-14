@@ -29,3 +29,15 @@ A simple and intuitive reminder management app that allows users to create, view
 You can download the APK for the To-Do Reminder app from the following link:
 
 [Download APK](https://drive.google.com/drive/folders/1jtQ5yBmQH_uRdhZomaJsRRVQFi4Myneg)
+
+### To Install the APK, Please Temporarily Disable Play Protect:
+
+1. Open the Google Play Store App.
+2. Tap the profile icon in the top right corner.
+3. Go to Play Protect Settings.
+4. Select "Play Protect" from the menu.
+5. Tap the settings gear icon in the top right corner.
+6. Disable Play Protect:
+    - Toggle off "Scan apps with Play Protect."
+7. **Install the APK**:
+    - After disabling Play Protect, you can proceed with the installation of the APK.
