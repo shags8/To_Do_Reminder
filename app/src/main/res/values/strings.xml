@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">To-Do Reminder</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_reminder">Add Reminder</string>
+    <string name="reminder_service_description">Reads out reminder titles and descriptions when tapped</string>
+
+    <string name="dialog_title_exact_alarm">Allow Exact Alarms</string>
+    <string name="dialog_message_exact_alarm">To trigger reminders exactly on time, please allow exact alarms for this app.</string>
+
+    <string name="button_grant">Grant</string>
+    <string name="button_cancel">Cancel</string>
+
+    <string name="toast_enable_exact_alarm">Please allow exact alarms in settings.</string>
+    <string name="toast_enable_manual">Unable to open settings. Please enable exact alarms manually.</string>
+    <string name="toast_alarm_not_exact">Reminder won\'t be triggered exactly on time.</string>
+
+    <string name="dialog_title_accessibility">Enable Reminder Voice</string>
+    <string name="button_enable">Enable</string>
+    <string-array name="recurrence_options">
+        <item>None</item>
+        <item>Minutes</item>
+        <item>Hourly</item>
+        <item>Daily</item>
+    </string-array>
+</resources>
