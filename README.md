@@ -17,6 +17,13 @@ A simple and intuitive reminder management app that allows users to create, view
 - **API Data Deletion**: The app currently does not support deletion of reminders fetched from the API. Deleting reminders that were initially fetched from the API is not possible.
 - **Local Data Deletion**: Deleting reminders created within the app (local reminders) works as expected. Simply press the delete button to remove these reminders.
 
+### Permission Guide
+For the app to work correctly, certain permissions must be granted, such as notification permissions. You can watch the video below to learn how to grant these permissions manually on your device:
+
+[How to Give Permissions - Video Guide](https://drive.google.com/drive/folders/1jtQ5yBmQH_uRdhZomaJsRRVQFi4Myneg)
+
+**Note**: These permissions are only needed if you’re installing the APK manually. If you install the app through the Play Store, these permissions will be handled automatically.
+
 ### How to Use the App
 
 1. **Create a Reminder**: Press the "Add" button, fill in the reminder details (title, description, recurrence, and time), and save it.
