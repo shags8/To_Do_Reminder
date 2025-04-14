@@ -1,0 +1,31 @@
+# To-Do Reminder App
+
+A simple and intuitive reminder management app that allows users to create, view, and delete reminders. The app is designed to handle different types of reminders, including those with recurring options. It features notifications based on the reminder time.
+
+## Features
+
+- **Create Reminders**: Users can create reminders with a title, description, and time.
+- **Notification System**: Users are notified when the reminder time arrives.
+- **Recurring Reminders**: Choose between different recurrence options (e.g., Minutes, Hourly, Daily).
+- **UI Design**: Clean and simple UI for better user experience.
+- **Delete Reminders**: Delete reminders created by the user.
+- **Time Validation**: Ensures the reminder time is set for the future, not the past.
+
+## Important Notes
+
+### Deletion Limitation
+- **API Data Deletion**: The app currently does not support deletion of reminders fetched from the API. Deleting reminders that were initially fetched from the API is not possible.
+- **Local Data Deletion**: Deleting reminders created within the app (local reminders) works as expected. Simply press the delete button to remove these reminders.
+
+### How to Use the App
+
+1. **Create a Reminder**: Press the "Add" button, fill in the reminder details (title, description, recurrence, and time), and save it.
+2. **View Reminders**: All created reminders are displayed in a list.
+3. **Delete a Reminder**: For locally created reminders, swipe left or use the delete button to remove them.
+4. **Set a Notification**: The app will automatically notify you when the reminder time arrives, provided the reminder time is in the future.
+
+### APK Download Link
+
+You can download the APK for the To-Do Reminder app from the following link:
+
+[Download APK](https://drive.google.com/drive/folders/1jtQ5yBmQH_uRdhZomaJsRRVQFi4Myneg)
