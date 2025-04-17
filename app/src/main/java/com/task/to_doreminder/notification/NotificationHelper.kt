@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import com.task.to_doreminder.MainActivity
 import com.task.to_doreminder.R
 
 object NotificationHelper {
@@ -22,13 +23,15 @@ object NotificationHelper {
         id: Long,
         title: String,
         description: String,
-        recurrence: String?
+        recurrence: String?,
+        repeatIntervalInMinutes: Int? = null
     ) {
         val intent = Intent(context, NotificationReceiver::class.java).apply {
             putExtra("title", title)
             putExtra("description", description)
             putExtra("id", id)
             recurrence?.let { putExtra("recurrence", it) }
+            repeatIntervalInMinutes?.let { putExtra("repeatIntervalInMinutes", it) }
         }
 
         val pendingIntent = PendingIntent.getBroadcast(
@@ -98,13 +101,27 @@ object NotificationHelper {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            id,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(title)
             .setContentText(description)
+            .setContentIntent(pendingIntent)
             .setAutoCancel(true)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
 
         notificationManager.notify(id, notification)
     }
+
 }

@@ -4,14 +4,14 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.format.DateFormat
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.task.to_doreminder.R
 import com.task.to_doreminder.data.local.AppDatabase
@@ -32,6 +32,7 @@ class AddReminderFragment : Fragment() {
         val db = AppDatabase.getDatabase(requireContext())
         ReminderViewModelFactory(ReminderRepository(db.reminderDao()))
     }
+
     private var selectedTime: Long = 0L
 
     override fun onCreateView(
@@ -57,7 +58,6 @@ class AddReminderFragment : Fragment() {
                 binding.recurrenceSpinner.selectedItem.toString().takeIf { it != "None" }
 
             if (title.isNotEmpty() && selectedTime > 0L) {
-                val existingReminder = viewModel.reminderLiveData.value
                 if (selectedTime <= System.currentTimeMillis()) {
                     Toast.makeText(
                         requireContext(),
@@ -66,6 +66,8 @@ class AddReminderFragment : Fragment() {
                     ).show()
                     return@setOnClickListener
                 }
+
+                val existingReminder = viewModel.reminderLiveData.value
 
                 val reminder = Reminder(
                     id = existingReminder?.id ?: 0,
@@ -78,19 +80,54 @@ class AddReminderFragment : Fragment() {
                 )
 
                 viewModel.addReminder(reminder)
+
+                val repeatInterval =
+                    if (recurrence.equals("Minutes", ignoreCase = true)) binding.minutePicker.value else null
+
                 NotificationHelper.scheduleReminder(
                     requireContext(),
                     selectedTime,
                     reminder.uniqueId,
                     title,
                     desc,
-                    recurrence
+                    recurrence,
+                    repeatInterval
                 )
+
                 viewModel.clearReminder()
                 findNavController().navigateUp()
             } else {
                 binding.titleEditText.error = "Title required"
             }
+        }
+    }
+
+    private fun setupRecurrenceSpinner() {
+        binding.minutePicker.minValue = 1
+        binding.minutePicker.maxValue = 60
+        binding.minutePicker.wrapSelectorWheel = true
+        binding.minutePicker.value = 2
+        val options = listOf("None", "Minutes", "Hourly", "Daily")
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, options)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.recurrenceSpinner.adapter = adapter
+
+        binding.recurrenceSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selected = parent.getItemAtPosition(position).toString()
+                if (selected.equals("Minutes", ignoreCase = true)) {
+                    binding.repeatLayout.visibility = View.VISIBLE
+                } else {
+                    binding.repeatLayout.visibility = View.GONE
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 
@@ -109,13 +146,6 @@ class AddReminderFragment : Fragment() {
                 if (index != -1) binding.recurrenceSpinner.setSelection(index)
             }
         }
-    }
-
-    private fun setupRecurrenceSpinner() {
-        val options = listOf("None", "Minutes", "Hourly", "Daily")
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, options)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.recurrenceSpinner.adapter = adapter
     }
 
     private fun pickDateTime() {

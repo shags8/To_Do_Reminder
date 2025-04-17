@@ -17,6 +17,7 @@ class NotificationReceiver : BroadcastReceiver() {
         val title = intent?.getStringExtra("title") ?: "Reminder"
         val description = intent?.getStringExtra("description") ?: ""
         val recurrence = intent?.getStringExtra("recurrence")
+        val repeatIntervalInMinutes = intent?.getIntExtra("repeatIntervalInMinutes", -1)
 
         CoroutineScope(Dispatchers.IO).launch {
             val db = AppDatabase.getDatabase(context)
@@ -26,7 +27,13 @@ class NotificationReceiver : BroadcastReceiver() {
                 NotificationHelper.showNotification(context, title, description, id.toInt())
 
                 val nextTime = when (recurrence) {
-                    "Minutes" -> System.currentTimeMillis() + 60000L
+                    "Minutes" -> {
+                        if ((repeatIntervalInMinutes ?: -1) > 0) {
+                            System.currentTimeMillis() + (repeatIntervalInMinutes ?: 1) * 60_000L
+                        } else {
+                            System.currentTimeMillis() + 60_000L
+                        }
+                    }
                     "Hourly" -> System.currentTimeMillis() + AlarmManager.INTERVAL_HOUR
                     "Daily" -> System.currentTimeMillis() + AlarmManager.INTERVAL_DAY
                     else -> null
@@ -39,7 +46,8 @@ class NotificationReceiver : BroadcastReceiver() {
                         id,
                         title,
                         description,
-                        recurrence
+                        recurrence,
+                        if (recurrence == "Minutes") repeatIntervalInMinutes else null
                     )
                 }
             }
